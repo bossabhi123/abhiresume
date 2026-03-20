@@ -11,7 +11,23 @@
     <meta property="og:image" content="https://bossabhi123.github.io/abhiresume/preview.png">
 
     <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="stylesheet" href="style.css">
+    <script>
+        // --- ONE VERSION TO RULE THEM ALL ---
+        const ver = "1.2"; 
+
+        // 1. Auto-load CSS with version
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'style.css?v=' + ver;
+        document.head.appendChild(link);
+
+        // 2. Auto-load JS with version (at the end of body)
+        window.onload = function() {
+            const script = document.createElement('script');
+            script.src = 'script.js?v=' + ver;
+            document.body.appendChild(script);
+        };
+    </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6V3VSQ293"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -31,6 +47,11 @@
         <h1 class="gradient-text">Abhishek Gopakumar</h1>
         <p class="subtitle">Front Office Receptionist & Tourism Professional</p>
         
+        <div class="status-badge">
+          <span class="status-dot"></span>
+          Available for Opportunities
+        </div> 
+
         <div class="contact-info">
             <span class="copy-item" data-copy="abhishekgopakumar20@gmail.com">abhishekgopakumar20@gmail.com</span>
             <span class="copy-item" data-copy="+919778190418">Ph: 9778190418</span>
@@ -39,7 +60,7 @@
 
         <div style="margin-top: 1.5rem;">
             <a href="resume.pdf" download="Abhishek_Gopakumar_Resume.pdf">
-                <button class="btn-primary">Download Resume</button>
+                <button style="display:none" class="btn-primary">Download Resume</button>
             </a>
         </div>
     </header>
@@ -107,8 +128,11 @@
              </div>
         </section>
     </div>
-
-    <script src="script.js"></script>
-
+    
+    <footer style="text-align: center; padding: 2rem; opacity: 0.6; font-size: 0.9rem;">
+      <p>Last Updated: <span id="last-updated"></span></p>
+      <p>&copy; 2026 Abhishek Gopakumar</p>
+    </footer>
+    
 </body>
 </html>

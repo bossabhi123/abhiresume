@@ -152,3 +152,15 @@ form.addEventListener('submit', async (event) => {
     }
 });
 
+// --- Auto-Updating Footer Date ---
+function updateFooterDate() {
+    const dateElement = document.getElementById('last-updated');
+    if (dateElement) {
+        const now = new Date();
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        dateElement.textContent = now.toLocaleDateString('en-US', options);
+    }
+}
+
+// Run it when the page loads
+updateFooterDate();

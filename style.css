@@ -205,6 +205,8 @@ button {
     background: linear-gradient(45deg, var(--accent-1), var(--accent-2));
     color: white;
     box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
+    text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3); /* Adds a subtle shadow to the text */
+    font-weight: 800; /* Makes the text chunkier */
 }
 
 .btn-outline {
@@ -401,4 +403,44 @@ button {
 @keyframes bounceCheck {
     0% { transform: translateY(0); text-shadow: 0 10px 15px rgba(0,0,0,0.2); }
     100% { transform: translateY(-10px); text-shadow: 0 20px 25px rgba(0,0,0,0.1); }
+}
+
+/* --- Availability Badge & Pulse --- */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(34, 197, 94, 0.1); /* Subtle green tint */
+    color: #22c55e; /* Bright emerald green */
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    margin: 1rem 0;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #22c55e;
+    border-radius: 50%;
+    position: relative;
+}
+
+/* The Glowing Pulse Animation */
+.status-dot::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #22c55e;
+    border-radius: 50%;
+    z-index: -1;
+    animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(2.5); opacity: 0; }
 }
