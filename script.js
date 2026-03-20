@@ -79,3 +79,76 @@ document.addEventListener('copy', event => {
     event.preventDefault();
 });
 
+// --- Modal Popup Logic ---
+const contactModal = document.getElementById('contact-modal');
+const floatingContactBtn = document.getElementById('floating-contact-btn');
+const closeModalBtn = document.getElementById('close-modal-btn');
+
+// Open modal when floating button is clicked
+floatingContactBtn.addEventListener('click', () => {
+    contactModal.classList.add('active');
+});
+
+// Close modal when the "X" is clicked
+closeModalBtn.addEventListener('click', () => {
+    contactModal.classList.remove('active');
+});
+
+// Close modal if the user clicks anywhere outside the frosted card
+contactModal.addEventListener('click', (event) => {
+    if (event.target === contactModal) {
+        contactModal.classList.remove('active');
+    }
+});
+
+// --- Form Submission & Success Animation ---
+const form = document.getElementById('contact-form');
+const successMessage = document.getElementById('success-message');
+const submitBtn = document.getElementById('submit-btn');
+
+form.addEventListener('submit', async (event) => {
+    event.preventDefault(); // Stop the page from redirecting
+    
+    // Change button text while sending
+    const originalBtnText = submitBtn.innerHTML;
+    submitBtn.innerHTML = "Sending... ⏳";
+    submitBtn.disabled = true;
+
+    try {
+        const response = await fetch(form.action, {
+            method: form.method,
+            body: new FormData(form),
+            headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+            // Hide the form and show the success message
+            form.style.display = 'none';
+            successMessage.style.display = 'block';
+            form.reset(); // Clear the typed text
+            
+            // Automatically close the modal after 3.5 seconds
+            setTimeout(() => {
+                document.getElementById('contact-modal').classList.remove('active');
+                
+                // Reset everything back to normal for the next time they open it
+                setTimeout(() => {
+                    form.style.display = 'flex';
+                    successMessage.style.display = 'none';
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.disabled = false;
+                }, 500); // Wait for the modal fade-out animation to finish
+            }, 3500);
+            
+        } else {
+            alert("Oops! There was a problem sending your message.");
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
+        }
+    } catch (error) {
+        alert("Oops! There was a network error.");
+        submitBtn.innerHTML = originalBtnText;
+        submitBtn.disabled = false;
+    }
+});
+

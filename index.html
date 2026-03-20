@@ -84,7 +84,31 @@
             <li><strong>Secondary School Leaving Certificate (SSLC)</strong> | 2020</li>
         </ul>
     </section>
+  
+    <button id="floating-contact-btn" class="floating-btn">📧</button>
+
+    <div id="contact-modal" class="modal-overlay">
+        <section class="liquid-glass-card frosted-glass modal-content">
+            <button id="close-modal-btn" class="close-btn">&times;</button>
+            <h2>Contact Me</h2>
+            <p>I am always open to discussing new opportunities or collaborations.</p>
+            
+            <form id="contact-form" action="https://formspree.io/f/xyknvwdg" method="POST" class="contact-form">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="_replyto" placeholder="Your Email" required>
+                <textarea name="message" placeholder="Your Message" rows="4" required></textarea>
+                <input type="hidden" name="_next" value="https://bossabhi123.github.io/abhiresume/">
+                <button type="submit" id="submit-btn" class="btn-primary">Send Message</button>
+            </form>
+            <div id="success-message" class="success-container">
+              <div class="checkmark">✅</div>
+              <h3>Message Sent!</h3>
+              <p>Thank you for reaching out. I'll get back to you shortly.</p>
+             </div>
+        </section>
+    </div>
 
     <script src="script.js"></script>
+
 </body>
 </html>
