@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 | Lost in the Mist</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .error-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .error-code {
+            font-size: 8rem;
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(45deg, var(--accent-1), var(--accent-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+            filter: drop-shadow(0 0 15px var(--glow-color));
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .error-card {
+            max-width: 400px;
+            margin-top: -20px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .home-btn {
+            margin-top: 2rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <h1 class="error-code">404</h1>
+        
+        <section class="liquid-glass-card error-card reveal active">
+            <h2>Page Not Found</h2>
+            <p>It seems you've wandered into the mist. This room doesn't exist in our resort yet.</p>
+            
+            <a href="https://bossabhi123.github.io/abhiresume/" class="home-btn">
+                <button class="btn-primary">Return to Lobby</button>
+            </a>
+        </section>
+    </div>
+
+    <script>
+        document.querySelector('.reveal').classList.add('active');
+    </script>
+</body>
+</html>
