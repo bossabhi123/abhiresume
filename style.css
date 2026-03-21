@@ -444,3 +444,46 @@ button {
     0% { transform: scale(1); opacity: 0.8; }
     100% { transform: scale(2.5); opacity: 0; }
 }
+
+/* --- Frosted Social Block (Horizontal) --- */
+.social-block {
+    display: inline-flex; /* Centers it with your text */
+    flex-direction: row;  /* Icons go left-to-right */
+    gap: 20px;
+    padding: 10px 25px;
+    border-radius: 50px; /* Pill shape looks more professional here */
+    margin-top: 1rem;
+    
+    /* KEEPING BEAUTIFUL GLASS PROPERTIES */
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.social-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.social-icon svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--text-color);
+    opacity: 0.8;
+}
+
+/* Hover Effects (Keeping the glow) */
+.social-icon:hover {
+    transform: translateY(-3px) scale(1.1);
+}
+
+.social-icon.linkedin:hover svg { fill: #0077b5; filter: drop-shadow(0 0 8px #0077b5); }
+.social-icon.instagram:hover svg { fill: #e1306c; filter: drop-shadow(0 0 8px #e1306c); }
+.social-icon.indeed:hover svg { fill: #003aaa; filter: drop-shadow(0 0 8px #003aaa); }
+
