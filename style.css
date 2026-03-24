@@ -289,14 +289,18 @@ button {
 
 /* Floating Button */
 .floating-btn {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
+    position: fixed !important; 
+    
+    /* Position relative to the SCREEN, not the page */
+    bottom: 30px !important;
+    right: 30px !important;
+    
+    /* Ensure it stays on top of everything else */
+    z-index: 9999 !important;
     width: 60px;
     height: 60px;
     border-radius: 50%;
     font-size: 1.8rem;
-    z-index: 9999;
     background: linear-gradient(45deg, var(--accent-1), var(--accent-2));
     color: white;
     box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
@@ -304,6 +308,8 @@ button {
     justify-content: center;
     align-items: center;
     padding: 0;
+    border: none;
+    cursor: pointer;
 }
 
 .floating-btn:hover {
@@ -313,26 +319,34 @@ button {
 
 /* Modal Overlay (Darkened Background) */
 .modal-overlay {
-    position: fixed;
+    /* FIX: Changed from absolute to fixed */
+    position: fixed; 
+    
+    /* Ensure it covers the current screen only */
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    z-index: 2000;
+    width: 100vw;
+    height: 100vh;
+    
+    /* Darken and Blur the background */
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    /* Perfection Centering */
     display: flex;
     justify-content: center;
     align-items: center;
     
-    /* Hidden by default */
+    /* Ensure it sits on top of all other cards */
+    z-index: 9999; 
+    
+    /* Visibility logic */
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.4s ease, visibility 0.4s ease;
+    transition: all 0.4s ease;
 }
 
-/* When active, show the overlay */
 .modal-overlay.active {
     opacity: 1;
     visibility: visible;
