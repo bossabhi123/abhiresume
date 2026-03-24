@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abhishek Gopakumar | Portfolio</title>
+    <meta property="og:title" content="Abhishek Gopakumar | Professional Portfolio">
+    <meta property="og:description" content="Front Office Receptionist & Tourism Professional specializing in exceptional guest relations.">
+    <meta property="og:image" content="https://bossabhi123.github.io/abhiresume/preview.jpg">
+    <meta property="og:url" content="https://bossabhi123.github.io/abhiresume/">
+    <meta property="og:image" content="https://bossabhi123.github.io/abhiresume/preview.png">
+
+    <link rel="icon" type="image/png" href="favicon.png">
+    <script>
+        // --- VERSION CONTROL & LOADER ---
+        const ver = "2.1"; 
+
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'style.css?v=' + ver;
+        document.head.appendChild(link);
+
+        window.onload = function() {
+            const script = document.createElement('script');
+            script.type = "module"; // Necessary for Firebase
+            script.src = 'script.js?v=' + ver;
+            document.body.appendChild(script);
+        };
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6V3VSQ293"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-X6V3VSQ293');
+    </script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">AG<span>.</span></div>
+        <button id="theme-toggle" class="btn-icon">☀️</button>
+    </nav>
+
+    <header class="hero">
+        <h1 class="gradient-text">Abhishek Gopakumar</h1>
+        <p class="subtitle">Front Office Receptionist & Tourism Professional</p>
+        
+        <div class="status-badge">
+          <span class="status-dot"></span>
+          Available for Opportunities
+        </div> 
+    </header>
+  
+    <div id="welcome-toast">Welcome back, <span id="toast-name">Guest</span>! 👋</div>
+
+    <section id="auth-gate" class="liquid-glass-card frosted-glass active" style="max-width: 450px; margin: 2rem auto; text-align: center;">
+      <h2 style="font-size: 1.5rem; color: var(--accent-1);">🔒 Portfolio Locked</h2>
+      <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 1.5rem;">Verify your identity to unlock my full resume.</p>
+      
+      <button id="google-signin-btn" class="btn-primary" style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; margin-bottom: 1.5rem;">
+          Sign in with Google
+      </button>
+  
+      <div class="divider"><span>OR USE PHONE</span></div>
+  
+      <div id="gate-step-1">
+          <input type="text" id="visitor-name" placeholder="Full Name" class="gate-input">
+          <input type="email" id="visitor-email" placeholder="Work Email" class="gate-input">
+          <div class="phone-input-wrapper">
+              <span class="flag-prefix">🇮🇳 +91</span>
+              <input type="tel" id="visitor-phone" placeholder="97781 90418" class="gate-input phone-field">
+          </div>
+          <div id="recaptcha-container" style="margin-top: 10px; display: flex; justify-content: center;"></div>
+          <button id="send-otp-btn" class="btn-outline" style="margin-top: 1.5rem; width: 100%;">Send SMS Code</button>
+      </div>
+  
+      <div id="gate-step-2" style="display: none;">
+          <input type="text" id="otp-code" placeholder="Enter 6-digit OTP" class="gate-input">
+          <button id="verify-otp-btn" class="btn-primary" style="margin-top: 1.5rem; width: 100%;">Verify & Unlock</button>
+      </div>
+    </section>
+
+    <div id="protected-content" style="display: none;">
+        <div class="contact-info" style="text-align: center;">
+            <div class="contact-info">
+            <span class="copy-item" data-copy="mail@abhishekgopakumar.qzz.io">Email: mail@abhishekgopakumar.qzz.io</span>
+            <span class="copy-item" data-copy="+9197781xxxxx">Ph: 97781xxxxx</span>
+            <p>Kottayam</p>
+            
+            <div class="social-block frosted-glass">
+            <a href="https://www.linkedin.com/in/abhishekg-844a34313" target="_blank" class="social-icon linkedin">
+                <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/_4_bhiii_?igsh=ZWpuZnJ6OXUzeTVj" target="_blank" class="social-icon instagram">
+                <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.919-.058-1.265-.069-1.646-.069-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="https://profile.indeed.com/p/abhishekg-cdk4zqt" target="_blank" class="social-icon indeed">
+                <svg viewBox="0 0 24 24"><path d="M12.001 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-3.09 16.892c-.732-.397-1.127-1.11-1.127-2.028v-5.728c0-.918.395-1.63 1.127-2.028 1.16-.628 3.666-.628 4.825 0 .732.398 1.127 1.11 1.127 2.028v.5h-1.025v-.5c0-.602-.278-1.006-.788-1.286-1.157-.626-3.66-.626-4.816 0-.51.28-.788.683-.788 1.286v5.728c0 .603.278 1.006.788 1.286 1.156.626 3.66.626 4.816 0 .51-.28.788-.683.788-1.286v-.5h1.025v.5c0 .918-.395 1.63-1.127 2.028-1.16.628-3.666.628-4.825 0zm11.231-7.756c-.015.011-.03.023-.046.035l-2.021 1.638-.13.1-.13-.1-1.01-1.01-.13-.13.13-.13 1.01-1.01.13-.13.13.1 2.021 1.638.016.012.015-.011 2.021-1.638.13-.1.13.1 1.01 1.01.13.13-.13.13-1.01 1.01-.13.13-.13-.1-2.021-1.638-.016-.012z"/></svg>
+            </a>
+        </div>
+        </div>
+
+        <div style="margin-top: 1.5rem;">
+            <a href="resume.pdf" download="Abhishek_Gopakumar_Resume.pdf">
+                <button style="display:none" class="btn-primary">Download Resume</button>
+            </a>
+        </div>
+    </header>
+
+    <section class="liquid-glass-card reveal">
+        <h2>Professional Summary</h2>
+        <p>Dedicated <span class="highlight">hospitality professional</span> with a <span class="highlight">Bachelor of Tourism and Travel Management (BTTM)</span> degree. Proven experience delivering <span class="highlight">exceptional guest service</span> in luxury resort environments. Skilled in <span class="highlight">front desk operations</span>, <span class="highlight">property management systems</span>, and cross-departmental coordination to ensure a seamless guest experience.</p>
+    </section>
+
+    <section class="liquid-glass-card reveal">
+        <h2>Professional Experience</h2>
+        <div class="job-entry">
+            <h3><span class="highlight">Front Office Trainee (GSA)</span></h3>
+            <h4>Kumarakom Gateway Resort <span>| April 2025 – Present</span></h4>
+            <ul>
+                <li>Manage end-to-end <span class="highlight">check-in and check-out processes</span>, ensuring a seamless and welcoming arrival experience for resort guests.</li>
+                <li>Operate property management systems to process <span class="highlight">reservations</span>, allocate rooms, and maintain accurate guest folios.</li>
+                <li>Coordinate effectively with <span class="highlight">housekeeping and maintenance teams</span> to track room status and expedite turnarounds.</li>
+                <li>Address guest inquiries, fulfill special requests, and resolve minor complaints promptly to maintain <span class="highlight">high satisfaction scores</span>.</li>
+                <li>Assist with shift closures, <span class="highlight">cash handling</span>, and auditing daily front desk transactions with zero discrepancies.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="liquid-glass-card reveal">
+        <h2>Core Competencies & Skills</h2>
+        <div class="tags-container">
+            <span class="tag">Front Desk Operations & Guest Relations</span>
+            <span class="tag">PMS (The Hotelier) & Reservations</span>
+            <span class="tag">VIP Handling & Up-selling</span>
+            <span class="tag">Conflict Resolution</span>
+            <span class="tag">Interdepartmental Communication</span>
+            <span class="tag">MS Office & E-Systems</span>
+        </div>
+    </section>
+
+    <section class="liquid-glass-card reveal">
+        <h2>Education</h2>
+        <ul class="education-list">
+            <li><strong>Bachelor of Tourism and Travel Management (BTTM)</strong> | 2025</li>
+            <li><strong>Plus Two (Commerce)</strong> | 2022</li>
+            <li><strong>Secondary School Leaving Certificate (SSLC)</strong> | 2020</li>
+        </ul>
+    </section>
+    
+    </div>
+    <footer style="text-align: center; padding: 2rem; opacity: 0.6; font-size: 0.9rem;">
+      <p>Last Updated: <span id="last-updated"></span></p>
+      <p>&copy; 2026 Abhishek Gopakumar</p>
+    </footer>
+    <button id="floating-contact-btn" class="floating-btn">📧</button>
+    <div id="contact-modal" class="modal-overlay">
+    
+    
+   <section class="liquid-glass-card frosted-glass modal-content">
+    <button id="close-modal-btn" class="close-btn">&times;</button>
+    
+    <div id="form-wrapper">
+        <h2>Contact Me</h2>
+        <p>I am always open to discussing new opportunities or collaborations.</p>
+        
+        <form id="contact-form" action="https://formspree.io/f/xyknvwdg" method="POST" class="contact-form">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="_replyto" placeholder="Your Email" required>
+            <textarea name="message" placeholder="Your Message" rows="4" required></textarea>
+            <button type="submit" id="submit-btn" class="btn-primary">Send Message</button>
+        </form>
+    </div>
+
+    <div id="success-message" class="success-container" style="display: none;">
+      <div class="checkmark">✅</div>
+      <h3>Message Sent!</h3>
+      <p>Thank you for reaching out. I'll get back to you shortly.</p>
+    </div>
+</section>
+
+</body>
+</html>
