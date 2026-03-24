@@ -289,14 +289,10 @@ button {
 
 /* Floating Button */
 .floating-btn {
-    position: fixed !important; 
-    
-    /* Position relative to the SCREEN, not the page */
+    position: fixed !important; /* Force it to stay on the screen */
     bottom: 30px !important;
     right: 30px !important;
-    
-    /* Ensure it stays on top of everything else */
-    z-index: 9999 !important;
+    z-index: 9999 !important; /* Sit on top of everything */
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -319,29 +315,18 @@ button {
 
 /* Modal Overlay (Darkened Background) */
 .modal-overlay {
-    /* FIX: Changed from absolute to fixed */
-    position: fixed; 
-    
-    /* Ensure it covers the current screen only */
+    position: fixed !important; /* Centers relative to DISPLAY, not page */
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    
-    /* Darken and Blur the background */
     background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    
-    /* Perfection Centering */
     display: flex;
     justify-content: center;
     align-items: center;
-    
-    /* Ensure it sits on top of all other cards */
-    z-index: 9999; 
-    
-    /* Visibility logic */
+    z-index: 10000;
     opacity: 0;
     visibility: hidden;
     transition: all 0.4s ease;
