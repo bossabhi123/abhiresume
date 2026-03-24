@@ -296,7 +296,7 @@ button {
     height: 60px;
     border-radius: 50%;
     font-size: 1.8rem;
-    z-index: 1500;
+    z-index: 9999;
     background: linear-gradient(45deg, var(--accent-1), var(--accent-2));
     color: white;
     box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
@@ -487,3 +487,155 @@ button {
 .social-icon.instagram:hover svg { fill: #e1306c; filter: drop-shadow(0 0 8px #e1306c); }
 .social-icon.indeed:hover svg { fill: #003aaa; filter: drop-shadow(0 0 8px #003aaa); }
 
+/* --- Add to your existing CSS --- */
+
+.gate-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 12px;
+    color: var(--text-color);
+    margin-top: 10px;
+    font-family: 'Outfit', sans-serif;
+    outline: none;
+}
+
+.gate-input:focus {
+    border-color: var(--accent-2);
+    box-shadow: 0 0 10px var(--glow-color);
+}
+
+/* Smooth reveal animation */
+#protected-content.unlocked-animation {
+    display: block !important;
+    animation: unlockReveal 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+@keyframes unlockReveal {
+    0% { opacity: 0; filter: blur(20px); transform: translateY(30px); }
+    100% { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+
+/* --- Phone Input with Flag --- */
+.phone-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.flag-prefix {
+    position: absolute;
+    left: 15px;
+    font-size: 1rem;
+    color: var(--text-color);
+    opacity: 0.9;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+}
+
+/* Push the text to the right so it doesn't overlap the flag */
+.phone-field {
+    padding-left: 75px !important; 
+}
+
+/* --- Auth Gate UI --- */
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.5rem 0;
+    color: var(--text-color);
+    opacity: 0.4;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+.divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid rgba(128,128,128,0.2);
+}
+.divider:not(:empty)::before { margin-right: .5em; }
+.divider:not(:empty)::after { margin-left: .5em; }
+
+.phone-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.flag-prefix {
+    position: absolute;
+    left: 15px;
+    font-weight: 600;
+    pointer-events: none;
+    font-size: 0.9rem;
+}
+.phone-field { padding-left: 70px !important; }
+
+.gate-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 12px;
+    color: var(--text-color);
+    margin-top: 10px;
+    outline: none;
+}
+
+/* --- Welcome Toast Notification --- */
+#welcome-toast {
+    position: fixed;
+    bottom: -100px; /* Start hidden below screen */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3000;
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-color);
+    white-space: nowrap;
+    transition: bottom 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    
+    /* Matching your Liquid Glass Theme */
+    background: var(--card-bg);
+    backdrop-filter: blur(15px) saturate(160%);
+    -webkit-backdrop-filter: blur(15px) saturate(160%);
+    border: 1px solid var(--accent-2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 15px var(--glow-color);
+}
+
+#welcome-toast.show {
+    bottom: 30px; /* Slide up into view */
+}
+
+/* --- Contact Form Transitions --- */
+
+/* Animation for the element disappearing */
+.fade-out {
+    animation: fadeOutBlur 0.5s ease forwards;
+}
+
+/* Animation for the element appearing */
+.fade-in {
+    animation: fadeInSlide 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes fadeOutBlur {
+    from { opacity: 1; filter: blur(0); transform: scale(1); }
+    to { opacity: 0; filter: blur(10px); transform: scale(0.95); }
+}
+
+@keyframes fadeInSlide {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

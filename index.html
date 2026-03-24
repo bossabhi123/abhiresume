@@ -12,18 +12,17 @@
 
     <link rel="icon" type="image/png" href="favicon.png">
     <script>
-        // --- ONE VERSION TO RULE THEM ALL ---
-        const ver = "1.4"; 
+        // --- VERSION CONTROL & LOADER ---
+        const ver = "2.1"; 
 
-        // 1. Auto-load CSS with version
         const link = document.createElement('link');
         link.rel = 'stylesheet';
         link.href = 'style.css?v=' + ver;
         document.head.appendChild(link);
 
-        // 2. Auto-load JS with version (at the end of body)
         window.onload = function() {
             const script = document.createElement('script');
+            script.type = "module"; // Necessary for Firebase
             script.src = 'script.js?v=' + ver;
             document.body.appendChild(script);
         };
@@ -33,7 +32,6 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-X6V3VSQ293');
     </script>
 </head>
@@ -51,8 +49,40 @@
           <span class="status-dot"></span>
           Available for Opportunities
         </div> 
+    </header>
+  
+    <div id="welcome-toast">Welcome back, <span id="toast-name">Guest</span>! 👋</div>
 
-        <div class="contact-info">
+    <section id="auth-gate" class="liquid-glass-card frosted-glass active" style="max-width: 450px; margin: 2rem auto; text-align: center;">
+      <h2 style="font-size: 1.5rem; color: var(--accent-1);">🔒 Portfolio Locked</h2>
+      <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 1.5rem;">Verify your identity to unlock my full resume.</p>
+      
+      <button id="google-signin-btn" class="btn-primary" style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; margin-bottom: 1.5rem;">
+          Sign in with Google
+      </button>
+  
+      <div class="divider"><span>OR USE PHONE</span></div>
+  
+      <div id="gate-step-1">
+          <input type="text" id="visitor-name" placeholder="Full Name" class="gate-input">
+          <input type="email" id="visitor-email" placeholder="Work Email" class="gate-input">
+          <div class="phone-input-wrapper">
+              <span class="flag-prefix">🇮🇳 +91</span>
+              <input type="tel" id="visitor-phone" placeholder="97781 90418" class="gate-input phone-field">
+          </div>
+          <div id="recaptcha-container" style="margin-top: 10px; display: flex; justify-content: center;"></div>
+          <button id="send-otp-btn" class="btn-outline" style="margin-top: 1.5rem; width: 100%;">Send SMS Code</button>
+      </div>
+  
+      <div id="gate-step-2" style="display: none;">
+          <input type="text" id="otp-code" placeholder="Enter 6-digit OTP" class="gate-input">
+          <button id="verify-otp-btn" class="btn-primary" style="margin-top: 1.5rem; width: 100%;">Verify & Unlock</button>
+      </div>
+    </section>
+
+    <div id="protected-content" style="display: none;">
+        <div class="contact-info" style="text-align: center;">
+            <div class="contact-info">
             <span class="copy-item" data-copy="mail@abhishekgopakumar.qzz.io">Email: mail@abhishekgopakumar.qzz.io</span>
             <span class="copy-item" data-copy="+9197781xxxxx">Ph: 97781xxxxx</span>
             <p>Kottayam</p>
@@ -86,7 +116,7 @@
         <h2>Professional Experience</h2>
         <div class="job-entry">
             <h3><span class="highlight">Front Office Trainee (GSA)</span></h3>
-            <h4>Kumarakom Gateway Resort <span>| June 2025 – Present</span></h4>
+            <h4>Kumarakom Gateway Resort <span>| April 2025 – Present</span></h4>
             <ul>
                 <li>Manage end-to-end <span class="highlight">check-in and check-out processes</span>, ensuring a seamless and welcoming arrival experience for resort guests.</li>
                 <li>Operate property management systems to process <span class="highlight">reservations</span>, allocate rooms, and maintain accurate guest folios.</li>
@@ -117,34 +147,37 @@
             <li><strong>Secondary School Leaving Certificate (SSLC)</strong> | 2020</li>
         </ul>
     </section>
-  
-    <button id="floating-contact-btn" class="floating-btn">📧</button>
-
-    <div id="contact-modal" class="modal-overlay">
-        <section class="liquid-glass-card frosted-glass modal-content">
-            <button id="close-modal-btn" class="close-btn">&times;</button>
-            <h2>Contact Me</h2>
-            <p>I am always open to discussing new opportunities or collaborations.</p>
-            
-            <form id="contact-form" action="https://formspree.io/f/xyknvwdg" method="POST" class="contact-form">
-                <input type="text" name="name" placeholder="Your Name" required>
-                <input type="email" name="_replyto" placeholder="Your Email" required>
-                <textarea name="message" placeholder="Your Message" rows="4" required></textarea>
-                <input type="hidden" name="_next" value="https://bossabhi123.github.io/abhiresume/">
-                <button type="submit" id="submit-btn" class="btn-primary">Send Message</button>
-            </form>
-            <div id="success-message" class="success-container">
-              <div class="checkmark">✅</div>
-              <h3>Message Sent!</h3>
-              <p>Thank you for reaching out. I'll get back to you shortly.</p>
-             </div>
-        </section>
-    </div>
     
+    </div>
     <footer style="text-align: center; padding: 2rem; opacity: 0.6; font-size: 0.9rem;">
       <p>Last Updated: <span id="last-updated"></span></p>
       <p>&copy; 2026 Abhishek Gopakumar</p>
     </footer>
+    <button id="floating-contact-btn" class="floating-btn">📧</button>
+    <div id="contact-modal" class="modal-overlay">
     
+    
+   <section class="liquid-glass-card frosted-glass modal-content">
+    <button id="close-modal-btn" class="close-btn">&times;</button>
+    
+    <div id="form-wrapper">
+        <h2>Contact Me</h2>
+        <p>I am always open to discussing new opportunities or collaborations.</p>
+        
+        <form id="contact-form" action="https://formspree.io/f/xyknvwdg" method="POST" class="contact-form">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="_replyto" placeholder="Your Email" required>
+            <textarea name="message" placeholder="Your Message" rows="4" required></textarea>
+            <button type="submit" id="submit-btn" class="btn-primary">Send Message</button>
+        </form>
+    </div>
+
+    <div id="success-message" class="success-container" style="display: none;">
+      <div class="checkmark">✅</div>
+      <h3>Message Sent!</h3>
+      <p>Thank you for reaching out. I'll get back to you shortly.</p>
+    </div>
+</section>
+
 </body>
 </html>

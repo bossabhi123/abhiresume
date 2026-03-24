@@ -1,166 +1,200 @@
-// 1. Dark Mode Toggle
-const toggleBtn = document.getElementById('theme-toggle');
-const rootElement = document.documentElement;
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 
-toggleBtn.addEventListener('click', () => {
-    const currentTheme = rootElement.getAttribute('data-theme');
-    if (currentTheme === 'dark') {
-        rootElement.removeAttribute('data-theme');
-        toggleBtn.textContent = '🌙'; // Shows moon in light mode
-    } else {
-        rootElement.setAttribute('data-theme', 'dark');
-        toggleBtn.textContent = '☀️'; // Shows sun in dark mode
-    }
-});
+const firebaseConfig = {
+    apiKey: "AIzaSyCnKvNB4JBzW8PhUyQCbWJgr_-wCsFqDfM",
+    authDomain: "abhi-resume-dd56f.firebaseapp.com",
+    projectId: "abhi-resume-dd56f",
+    storageBucket: "abhi-resume-dd56f.firebasestorage.app",
+    messagingSenderId: "995622174674",
+    appId: "1:995622174674:web:293d2b57b1ff40fbcd920b",
+    measurementId: "G-J6TQR9BMYF"
+};
 
-// 2. Scroll Reveal Animation
-function reveal() {
-    const reveals = document.querySelectorAll(".reveal");
-    for (let i = 0; i < reveals.length; i++) {
-        const windowHeight = window.innerHeight;
-        const elementTop = reveals[i].getBoundingClientRect().top;
-        const elementVisible = 100; 
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
 
-        if (elementTop < windowHeight - elementVisible) {
-            reveals[i].classList.add("active");
-        }
+// Recaptcha
+window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { 'size': 'invisible' });
+
+// --- LEAD CAPTURE (FORMSPREE) ---
+async function logLead(name, email, phone, method) {
+    const formData = new FormData();
+    formData.append("Name", name);
+    formData.append("Email", email);
+    formData.append("Phone", phone);
+    formData.append("Method", method);
+    formData.append("_subject", "🚀 Portfolio Unlock: " + name);
+
+    try {
+        await fetch("https://formspree.io/f/xyknvwdg", {
+            method: "POST",
+            body: formData,
+            headers: { 'Accept': 'application/json' }
+        });
+    } catch (e) { console.error("Log failed"); }
+}
+
+function unlockSite(name) {
+    const finalName = name || localStorage.getItem('visitor_name') || "Recruiter";
+    localStorage.setItem('abhi_unlocked', 'true');
+    localStorage.setItem('visitor_name', finalName);
+
+    document.getElementById('auth-gate').style.display = 'none';
+    document.getElementById('protected-content').style.display = 'block';
+    document.getElementById('protected-content').classList.add('unlocked-animation');
+    
+    showToast(finalName);
+    reveal(); 
+}
+
+function showToast(name) {
+    const toast = document.getElementById('welcome-toast');
+    document.getElementById('toast-name').textContent = name;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 4000);
+}
+
+// Google Login
+async function handleGoogleLogin() {
+    try {
+        const result = await signInWithPopup(auth, googleProvider);
+        const user = result.user; // We must define 'user' from the result
+
+        // We MUST await this so the data sends before the site unlocks
+        await logLead(user.displayName, user.email, "N/A", "GOOGLE_AUTH");
+        
+        unlockSite();
+    } catch (error) { 
+        console.error(error);
+        alert("Google Sign-in failed."); 
     }
 }
-window.addEventListener("scroll", reveal);
-reveal(); // Trigger once on load
 
-// 3. Tap to Copy to Clipboard
-const copyItems = document.querySelectorAll('.copy-item');
-copyItems.forEach(item => {
-    item.addEventListener('click', () => {
-        const textToCopy = item.getAttribute('data-copy');
-        navigator.clipboard.writeText(textToCopy).then(() => {
-            const originalHTML = item.innerHTML;
-            item.innerHTML = "Copied to clipboard! ✅";
-            item.style.color = "var(--accent-1)";
-            
-            setTimeout(() => {
-                item.innerHTML = originalHTML;
-                item.style.color = "var(--text-color)";
-            }, 2000);
-        });
+// SMS Login
+async function handleSendOTP() {
+    const name = document.getElementById('visitor-name').value;
+    const email = document.getElementById('visitor-email').value;
+    const phone = "+91" + document.getElementById('visitor-phone').value.trim();
+    if(!name || !email || phone.length < 13) return alert("Fill all fields.");
+    
+    try {
+        window.confirmationResult = await signInWithPhoneNumber(auth, phone, window.recaptchaVerifier);
+        document.getElementById('gate-step-1').style.display = 'none';
+        document.getElementById('gate-step-2').style.display = 'block';
+    } catch (e) { alert(e.message); }
+}
+
+async function handleVerifyOTP() {
+    const code = document.getElementById('otp-code').value;
+    const name = document.getElementById('visitor-name').value;
+    const email = document.getElementById('visitor-email').value;
+    const phone = "+91" + document.getElementById('visitor-phone').value.trim();
+
+    try {
+        await confirmationResult.confirm(code);
+        await logLead(name, email, phone, "SMS_OTP");
+        unlockSite(name);
+    } catch (e) { alert("Invalid Code"); }
+}
+// UI LOGIC
+if (localStorage.getItem('abhi_unlocked') === 'true') {
+    unlockSite();
+}
+
+document.getElementById('google-signin-btn').onclick = handleGoogleLogin;
+document.getElementById('send-otp-btn').onclick = handleSendOTP;
+document.getElementById('verify-otp-btn').onclick = handleVerifyOTP;
+
+// Scroll Reveal & Theme Toggle (Keep your old logic here)
+function reveal() {
+    document.querySelectorAll(".reveal").forEach(r => {
+        if (r.getBoundingClientRect().top < window.innerHeight - 100) r.classList.add("active");
     });
-});
+}
+window.addEventListener("scroll", reveal);
 
-// --- Security & Protection ---
-
-// 1. Disable Right-Click Menu
-document.addEventListener('contextmenu', event => {
-    event.preventDefault();
-});
-
-// 2. Disable Keyboard Shortcuts (F12, Inspect Element, View Source)
-document.addEventListener('keydown', event => {
-    // Prevent F12
-    if (event.key === 'F12') {
-        event.preventDefault();
-    }
-    // Prevent Ctrl+Shift+I / Cmd+Option+I (Inspect)
-    if (event.ctrlKey && event.shiftKey && (event.key === 'I' || event.key === 'i')) {
-        event.preventDefault();
-    }
-    // Prevent Ctrl+Shift+J / Cmd+Option+J (Console)
-    if (event.ctrlKey && event.shiftKey && (event.key === 'J' || event.key === 'j')) {
-        event.preventDefault();
-    }
-    // Prevent Ctrl+U / Cmd+U (View Source)
-    if (event.ctrlKey && (event.key === 'U' || event.key === 'u')) {
-        event.preventDefault();
+// 1. Dark Mode
+const toggleBtn = document.getElementById('theme-toggle');
+toggleBtn.addEventListener('click', () => {
+    const root = document.documentElement;
+    if (root.getAttribute('data-theme') === 'dark') {
+        root.removeAttribute('data-theme');
+        toggleBtn.textContent = '🌙';
+    } else {
+        root.setAttribute('data-theme', 'dark');
+        toggleBtn.textContent = '☀️';
     }
 });
 
-// 3. Disable the Copy Command (Ctrl+C / Cmd+C)
-document.addEventListener('copy', event => {
-    event.preventDefault();
+// 3. Security (Protection)
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('copy', e => e.preventDefault());
+document.addEventListener('keydown', e => {
+    if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) e.preventDefault();
 });
 
-// --- Modal Popup Logic ---
-const contactModal = document.getElementById('contact-modal');
-const floatingContactBtn = document.getElementById('floating-contact-btn');
-const closeModalBtn = document.getElementById('close-modal-btn');
+// 4. Modal Logic
+const modal = document.getElementById('contact-modal');
+document.getElementById('floating-contact-btn')?.addEventListener('click', () => modal.classList.add('active'));
+document.getElementById('close-modal-btn')?.addEventListener('click', () => modal.classList.remove('active'));
 
-// Open modal when floating button is clicked
-floatingContactBtn.addEventListener('click', () => {
-    contactModal.classList.add('active');
-});
+// 5. Initial Checks
+if(localStorage.getItem('resume_unlocked') === 'true') {
+    document.getElementById('auth-gate').style.display = 'none';
+    document.getElementById('protected-content').style.display = 'block';
+}
+function updateFooterDate() {
+    const date = document.getElementById('last-updated');
+    if (date) date.textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+updateFooterDate();
 
-// Close modal when the "X" is clicked
-closeModalBtn.addEventListener('click', () => {
-    contactModal.classList.remove('active');
-});
-
-// Close modal if the user clicks anywhere outside the frosted card
-contactModal.addEventListener('click', (event) => {
-    if (event.target === contactModal) {
-        contactModal.classList.remove('active');
-    }
-});
-
-// --- Form Submission & Success Animation ---
-const form = document.getElementById('contact-form');
+const contactForm = document.getElementById('contact-form');
+const formWrapper = document.getElementById('form-wrapper');
 const successMessage = document.getElementById('success-message');
 const submitBtn = document.getElementById('submit-btn');
 
-form.addEventListener('submit', async (event) => {
-    event.preventDefault(); // Stop the page from redirecting
-    
-    // Change button text while sending
-    const originalBtnText = submitBtn.innerHTML;
-    submitBtn.innerHTML = "Sending... ⏳";
-    submitBtn.disabled = true;
+if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = "Sending... ⏳";
+        submitBtn.disabled = true;
 
-    try {
-        const response = await fetch(form.action, {
-            method: form.method,
-            body: new FormData(form),
-            headers: { 'Accept': 'application/json' }
-        });
+        const formData = new FormData(contactForm);
 
-        if (response.ok) {
-            // Hide the form and show the success message
-            form.style.display = 'none';
-            successMessage.style.display = 'block';
-            form.reset(); // Clear the typed text
-            
-            // Automatically close the modal after 3.5 seconds
-            setTimeout(() => {
-                document.getElementById('contact-modal').classList.remove('active');
-                
-                // Reset everything back to normal for the next time they open it
+        try {
+            const response = await fetch(contactForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (response.ok) {
+                // 1. Start the Fade Out animation on the form wrapper
+                formWrapper.classList.add('fade-out');
+
+                // 2. Wait for the fade-out to finish (500ms)
                 setTimeout(() => {
-                    form.style.display = 'flex';
-                    successMessage.style.display = 'none';
-                    submitBtn.innerHTML = originalBtnText;
-                    submitBtn.disabled = false;
-                }, 500); // Wait for the modal fade-out animation to finish
-            }, 3500);
-            
-        } else {
-            alert("Oops! There was a problem sending your message.");
-            submitBtn.innerHTML = originalBtnText;
+                    formWrapper.style.display = 'none';
+                    
+                    // 3. Show success message and start Fade In
+                    successMessage.style.display = 'block';
+                    successMessage.classList.add('fade-in');
+                    
+                    contactForm.reset();
+                }, 500);
+
+            } else {
+                throw new Error('Failed');
+            }
+        } catch (error) {
+            alert("Error sending message. Please try again.");
+            submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
         }
-    } catch (error) {
-        alert("Oops! There was a network error.");
-        submitBtn.innerHTML = originalBtnText;
-        submitBtn.disabled = false;
-    }
-});
-
-// --- Auto-Updating Footer Date ---
-function updateFooterDate() {
-    const dateElement = document.getElementById('last-updated');
-    if (dateElement) {
-        const now = new Date();
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        dateElement.textContent = now.toLocaleDateString('en-US', options);
-    }
+    });
 }
-
-// Run it when the page loads
-updateFooterDate();
