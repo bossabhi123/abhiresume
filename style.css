@@ -231,8 +231,8 @@ button { cursor: pointer; font-family: 'Outfit', sans-serif; font-weight: 600; b
 }
 
 .firebase-logo {
-    width: 16px;
-    height: 16px;
+    width: 10px;
+    height: 10px;
     filter: drop-shadow(0 0 5px rgba(255, 202, 40, 0.4));
 }
 
