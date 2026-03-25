@@ -72,15 +72,34 @@ async function handleGoogleLogin() {
 async function handleSendOTP() {
     const name = document.getElementById('visitor-name').value;
     const email = document.getElementById('visitor-email').value;
-    const phone = "+91" + document.getElementById('visitor-phone').value.trim();
-    if(!name || !email || phone.length < 13) return alert("Fill all fields.");
-    
+    const phoneInput = document.getElementById('visitor-phone');
+    const phone = "+91" + phoneInput.value.trim();
+    const btn = document.getElementById('send-otp-btn');
+
+    if(!name || !email || phoneInput.value.trim().length < 10) {
+        return alert("Please fill all fields correctly.");
+    }
+
+    // --- TRIGGER LIQUIFIED ANIMATION ---
+    btn.classList.add('liquify-loading');
+
     try {
+        // Send data to Formspree first
+        await logLead(name, email, phone, "SMS_OTP");
+
+        // Firebase SMS Logic
         window.confirmationResult = await signInWithPhoneNumber(auth, phone, window.recaptchaVerifier);
+        
+        // Move to Step 2
         document.getElementById('gate-step-1').style.display = 'none';
         document.getElementById('gate-step-2').style.display = 'block';
-    } catch (e) { alert(e.message); }
+    } catch (e) {
+        alert("Error: " + e.message);
+        // Remove animation if there is an error so they can try again
+        btn.classList.remove('liquify-loading');
+    }
 }
+
 
 async function handleVerifyOTP() {
     const code = document.getElementById('otp-code').value;
