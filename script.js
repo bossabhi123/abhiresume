@@ -15,7 +15,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
-// Recaptcha
 window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { 'size': 'invisible' });
 
 // --- LEAD CAPTURE (FORMSPREE) ---
@@ -60,12 +59,9 @@ function showToast(name) {
 async function handleGoogleLogin() {
     try {
         const result = await signInWithPopup(auth, googleProvider);
-        const user = result.user; // We must define 'user' from the result
-
-        // We MUST await this so the data sends before the site unlocks
+        const user = result.user; 
         await logLead(user.displayName, user.email, "N/A", "GOOGLE_AUTH");
-        
-        unlockSite();
+        unlockSite(user.displayName); // Fixed missing parameter!
     } catch (error) { 
         console.error(error);
         alert("Google Sign-in failed."); 
@@ -98,7 +94,8 @@ async function handleVerifyOTP() {
         unlockSite(name);
     } catch (e) { alert("Invalid Code"); }
 }
-// UI LOGIC
+
+// UI LOGIC INITIALIZATION
 if (localStorage.getItem('abhi_unlocked') === 'true') {
     unlockSite();
 }
@@ -107,7 +104,6 @@ document.getElementById('google-signin-btn').onclick = handleGoogleLogin;
 document.getElementById('send-otp-btn').onclick = handleSendOTP;
 document.getElementById('verify-otp-btn').onclick = handleVerifyOTP;
 
-// Scroll Reveal & Theme Toggle (Keep your old logic here)
 function reveal() {
     document.querySelectorAll(".reveal").forEach(r => {
         if (r.getBoundingClientRect().top < window.innerHeight - 100) r.classList.add("active");
@@ -115,7 +111,6 @@ function reveal() {
 }
 window.addEventListener("scroll", reveal);
 
-// 1. Dark Mode
 const toggleBtn = document.getElementById('theme-toggle');
 toggleBtn.addEventListener('click', () => {
     const root = document.documentElement;
@@ -128,28 +123,34 @@ toggleBtn.addEventListener('click', () => {
     }
 });
 
-// 3. Security (Protection)
 document.addEventListener('contextmenu', e => e.preventDefault());
 document.addEventListener('copy', e => e.preventDefault());
 document.addEventListener('keydown', e => {
     if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) e.preventDefault();
 });
 
-// 4. Modal Logic
-const modal = document.getElementById('contact-modal');
-document.getElementById('floating-contact-btn')?.addEventListener('click', () => modal.classList.add('active'));
-document.getElementById('close-modal-btn')?.addEventListener('click', () => modal.classList.remove('active'));
-
-// 5. Initial Checks
-if(localStorage.getItem('resume_unlocked') === 'true') {
-    document.getElementById('auth-gate').style.display = 'none';
-    document.getElementById('protected-content').style.display = 'block';
-}
 function updateFooterDate() {
     const date = document.getElementById('last-updated');
     if (date) date.textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 updateFooterDate();
+
+// --- MODAL & CONTACT FORM LOGIC ---
+const modal = document.getElementById('contact-modal');
+const floatingBtn = document.getElementById('floating-contact-btn');
+const closeBtn = document.getElementById('close-modal-btn');
+
+if (floatingBtn && modal) {
+    floatingBtn.onclick = () => modal.classList.add('active');
+    closeBtn.onclick = () => modal.classList.remove('active');
+    
+    // Close modal if clicking the background blur
+    modal.onclick = (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('active');
+        }
+    };
+}
 
 const contactForm = document.getElementById('contact-form');
 const formWrapper = document.getElementById('form-wrapper');
@@ -174,23 +175,28 @@ if (contactForm) {
             });
 
             if (response.ok) {
-                // 1. Start the Fade Out animation on the form wrapper
                 formWrapper.classList.add('fade-out');
-
-                // 2. Wait for the fade-out to finish (500ms)
                 setTimeout(() => {
                     formWrapper.style.display = 'none';
-                    
-                    // 3. Show success message and start Fade In
                     successMessage.style.display = 'block';
                     successMessage.classList.add('fade-in');
-                    
                     contactForm.reset();
+                    
+                    // Auto-close after 3 seconds and reset
+                    setTimeout(() => {
+                        modal.classList.remove('active');
+                        setTimeout(() => {
+                            formWrapper.classList.remove('fade-out');
+                            successMessage.classList.remove('fade-in');
+                            formWrapper.style.display = 'block';
+                            successMessage.style.display = 'none';
+                            submitBtn.innerHTML = originalText;
+                            submitBtn.disabled = false;
+                        }, 500); // Wait for fade
+                    }, 3000);
                 }, 500);
 
-            } else {
-                throw new Error('Failed');
-            }
+            } else { throw new Error('Failed'); }
         } catch (error) {
             alert("Error sending message. Please try again.");
             submitBtn.innerHTML = originalText;
