@@ -56,15 +56,32 @@ function showToast(name) {
 }
 
 // Google Login
+// --- Updated Google Login with Liquify Effect ---
 async function handleGoogleLogin() {
+    const btn = document.getElementById('google-signin-btn');
+    
+    // 1. Add the liquid loading class
+    btn.classList.add('liquify-loading');
+    
     try {
         const result = await signInWithPopup(auth, googleProvider);
         const user = result.user; 
+
+        // 2. Log the lead to Formspree
         await logLead(user.displayName, user.email, "N/A", "GOOGLE_AUTH");
-        unlockSite(user.displayName); // Fixed missing parameter!
+        
+        // 3. Unlock and greet
+        unlockSite(user.displayName);
+        
     } catch (error) { 
         console.error(error);
-        alert("Google Sign-in failed."); 
+        
+        // 4. If they close the popup without signing in, reset the button
+        btn.classList.remove('liquify-loading');
+        
+        if (error.code !== 'auth/cancelled-popup-request') {
+            alert("Google Sign-in failed. Please try again."); 
+        }
     }
 }
 

@@ -153,20 +153,21 @@ button { cursor: pointer; font-family: 'Outfit', sans-serif; font-weight: 600; b
 @keyframes fadeInSlide { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
 /* --- Liquified Loading State --- */
+/* --- Base Liquify Effect (No Text) --- */
 .liquify-loading {
     position: relative;
     overflow: hidden;
-    color: transparent !important; /* Hide text during loading */
+    color: transparent !important; 
     pointer-events: none;
     filter: blur(0.5px);
     animation: buttonPulse 1.5s infinite ease-in-out;
 }
 
-.liquify-loading::before {
-    content: "Sending OTP...";
+/* --- SMS Specific Text --- */
+#send-otp-btn.liquify-loading::before {
+    content: "Sending OTP... ⏳";
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     color: white;
     font-size: 0.9rem;
@@ -174,17 +175,27 @@ button { cursor: pointer; font-family: 'Outfit', sans-serif; font-weight: 600; b
     z-index: 2;
 }
 
+/* --- Google Specific Text with Padlock --- */
+#google-signin-btn.liquify-loading::before {
+    content: "\1F512  Secure Connection... 🛡️"; /* Added Padlock Icon */
+    position: absolute;
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 0.85rem; /* Slightly smaller to fit the icon */
+    font-weight: 600;
+    white-space: nowrap;
+    z-index: 2;
+    letter-spacing: 0.5px;
+}
+
 .liquify-loading::after {
     content: "";
     position: absolute;
     top: 0; left: -100%;
     width: 200%; height: 100%;
-    background: linear-gradient(
-        90deg, 
-        transparent, 
-        rgba(255, 255, 255, 0.4), 
-        transparent
-    );
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
     animation: liquidFlow 1.2s infinite;
 }
 
@@ -194,7 +205,37 @@ button { cursor: pointer; font-family: 'Outfit', sans-serif; font-weight: 600; b
 }
 
 @keyframes buttonPulse {
-    0% { transform: scale(1); box-shadow: 0 0 0 rgba(14, 165, 233, 0.4); }
+    0% { transform: scale(1); }
     50% { transform: scale(0.98); box-shadow: 0 0 20px var(--glow-color); }
-    100% { transform: scale(1); box-shadow: 0 0 0 rgba(14, 165, 233, 0.4); }
+    100% { transform: scale(1); }
+}
+
+/* Ensure the Google Icon vanishes during the liquid effect */
+.liquify-loading svg {
+    display: none !important;
+}
+
+/* --- Firebase Trust Badge --- */
+.firebase-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    opacity: 0.6;
+    font-size: 0.75rem;
+    color: var(--text-color);
+    letter-spacing: 0.5px;
+}
+
+.firebase-logo {
+    width: 16px;
+    height: 16px;
+    filter: drop-shadow(0 0 5px rgba(255, 202, 40, 0.4));
+}
+
+.firebase-badge strong {
+    color: var(--accent-2); /* Using your cyan-blue for the brand name */
 }
